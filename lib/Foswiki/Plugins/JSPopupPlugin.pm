@@ -104,7 +104,7 @@ sub handlePopup {
     my $query = Foswiki::Func::getCgiQuery();
     my $default = $params->{_DEFAULT} || '';    #TODO: not sure what thus should be :)
 
-    my $anchor = $params->{anchor};
+    my $anchor = ' '.$params->{anchor}.' ';
     my $anchortype = $params->{anchortype} || 'onclick';
     $anchortype = 'anchorless' unless ((defined($anchor)) && ($anchor ne ''));
     my $popuptext = $params->{popuptext};

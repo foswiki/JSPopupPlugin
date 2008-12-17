@@ -1,0 +1,7 @@
+data/System/JSPopupPlugin.txt  Plugin doc page
+pub/System/JSPopupPlugin/JSPopupPlugin.js
+pub/System/JSPopupPlugin/json.js
+pub/System/JSPopupPlugin/wikiringlogo20x20.png
+lib/Foswiki/Plugins/JSPopupPlugin.pm  Plugin Perl module 
+templates/jspopupplugin.javascript.tmpl
+templates/foswiki.popup.tmpl

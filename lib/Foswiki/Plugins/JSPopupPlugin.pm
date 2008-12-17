@@ -12,7 +12,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
-# For licensing info read LICENSE file in the TWiki root.
+# For licensing info read LICENSE file in the Foswiki root.
 
 =pod
 
@@ -22,27 +22,16 @@
 =cut
 
 # change the package name and $pluginName!!!
-package TWiki::Plugins::JSPopupPlugin;
+package Foswiki::Plugins::JSPopupPlugin;
 
 # Always use strict to enforce variable scoping
 use strict;
 
-# $VERSION is referred to by TWiki, and is the only global variable that
-# *must* exist in this package
 use vars qw( $VERSION $RELEASE $debug $pluginName $WEB $TOPIC );
-use vars qw( %TWikiCompatibility $popupSectionNumber $pluginPubUrl );
+use vars qw( %FoswikiCompatibility $popupSectionNumber $pluginPubUrl );
 
-# This should always be $Rev$ so that TWiki can determine the checked-in
-# status of the plugin. It is used by the build automation tools, so
-# you should leave it alone.
 $VERSION = '$Rev$';
-
-# This is a free-form string you can use to "name" your own plugin version.
-# It is *not* used by the build automation tools, but is reported as part
-# of the version number in PLUGINDESCRIPTIONS.
-$RELEASE = 'Dakar';
-
-# Name of this Plugin, only used in this module
+$RELEASE = 'Foswiki';
 $pluginName = 'JSPopupPlugin';
 
 =pod
@@ -59,16 +48,16 @@ $pluginName = 'JSPopupPlugin';
 sub initPlugin {
     my( $topic, $web, $user, $installWeb ) = @_;
 
-    setupTWiki4Compatibility();
-    TWiki::Func::registerTagHandler( 'POPUP', \&handlePopup );
-    TWiki::Func::registerTagHandler( 'POPUPLINK', \&handlePopupLink );
+    setupFoswiki4Compatibility();
+    Foswiki::Func::registerTagHandler( 'POPUP', \&handlePopup );
+    Foswiki::Func::registerTagHandler( 'POPUPLINK', \&handlePopupLink );
 
     $WEB = $web;
     $TOPIC= $topic;
     $popupSectionNumber = 0;
 
-   $pluginPubUrl = TWiki::Func::getPubUrlPath().'/'.
-            TWiki::Func::getTwikiWebname().'/'.$pluginName;
+   $pluginPubUrl = Foswiki::Func::getPubUrlPath().'/'.
+            Foswiki::Func::getTwikiWebname().'/'.$pluginName;
 
 
     # Plugin correctly initialized
@@ -82,22 +71,22 @@ sub commonTagsHandler {
 
 #TODO: implement the regex for registerHandler
     return unless ($_[0] =~ /<\/head>/);
-    return unless (keys(%{$TWikiCompatibility{HEAD}}) > 0);
+    return unless (keys(%{$FoswikiCompatibility{HEAD}}) > 0);
 
-    my $query = TWiki::Func::getCgiQuery();
+    my $query = Foswiki::Func::getCgiQuery();
     my $fromPopup = $query->param('fromPopup');
     return if (defined($fromPopup));#avoid nesting popups
 
         #fake up addToHead for cairo
-    if ($TWiki::Plugins::VERSION eq 1.025) {
+    if ($Foswiki::Plugins::VERSION eq 1.025) {
         my $htmlHeader = join(
             "\n",
-            map { '<!--'.$_.'-->'.$TWikiCompatibility{HEAD}{$_} }
-                keys %{$TWikiCompatibility{HEAD}});
+            map { '<!--'.$_.'-->'.$FoswikiCompatibility{HEAD}{$_} }
+                keys %{$FoswikiCompatibility{HEAD}});
         $_[0] =~ s/([<]\/head[>])/$htmlHeader$1/i if $htmlHeader;
         chomp($_[0]);
 
-        %{$TWikiCompatibility{HEAD}} = ();
+        %{$FoswikiCompatibility{HEAD}} = ();
     }
 }
 
@@ -112,7 +101,7 @@ sub commonTagsHandler {
 sub handlePopup {
     my($session, $params, $theTopic, $theWeb) = @_;
 
-    my $query = TWiki::Func::getCgiQuery();
+    my $query = Foswiki::Func::getCgiQuery();
     my $default = $params->{_DEFAULT} || '';    #TODO: not sure what thus should be :)
 
     my $anchor = $params->{anchor};
@@ -134,20 +123,20 @@ sub handlePopup {
 
     my $output = '';
     if ($anchortype eq 'popuplink') {
-        $event = 'return twiki.JSPopupPlugin.openPopupSectional(event, \'popupSection'.$popupSectionNumber.'\');';#ASSUME onclick
+        $event = 'return foswiki.JSPopupPlugin.openPopupSectional(event, \'popupSection'.$popupSectionNumber.'\');';#ASSUME onclick
         $output = $query->a({href=>$fallbackurl, onclick=>$event}, $anchor);
     } elsif ($anchortype eq 'anchorless') {
     } else {
-        $event = 'onclick="return twiki.JSPopupPlugin.openPopupSectional(event, \'popupSection'.$popupSectionNumber.'\');"';#ASSUME onclick
+        $event = 'onclick="return foswiki.JSPopupPlugin.openPopupSectional(event, \'popupSection'.$popupSectionNumber.'\');"';#ASSUME onclick
         if ($anchortype eq 'onmouseover') {
-            $event = 'onmouseover="return twiki.JSPopupPlugin.DelayedOpenPopupSectional(event, \'popupSection'.$popupSectionNumber.'\');return false;" onmouseout="return twiki.JSPopupPlugin.CancelOpenPopup();"';
+            $event = 'onmouseover="return foswiki.JSPopupPlugin.DelayedOpenPopupSectional(event, \'popupSection'.$popupSectionNumber.'\');return false;" onmouseout="return foswiki.JSPopupPlugin.CancelOpenPopup();"';
         }
         $output .= '<span '.$event.'>'."\n".$anchor."\n".'</span>';
     }
 
     #TODO: work out a way to mix tml mode in topic, and rest & delayedtml mode where it needs to be added in the postRenderingHandler (and can use JSON)
     if ($popuptexttype eq 'rest') {
-        #nasty way to stop the url from getting TWiki'd
+        #nasty way to stop the url from getting Foswiki'd
     } else {
         $popuptext = "\n".$popuptext."\n";
         $popuptext =~ s/\$percnt/%/g;
@@ -172,7 +161,7 @@ sub handlePopup {
 sub handlePopupLink {
     my($session, $params, $theTopic, $theWeb) = @_;
 
-    my $query = TWiki::Func::getCgiQuery();
+    my $query = Foswiki::Func::getCgiQuery();
     my $anchor = $params->{_DEFAULT} || $params->{anchor} || 'Popup';
     my $url = $params->{url};
     
@@ -185,7 +174,7 @@ sub handlePopupLink {
     
 
     my $display = 'display:none;';
-    my $event = 'return twiki.JSPopupPlugin.openPopupSectional(event, \'popupSection'.$popupSectionNumber.'\');';#ASSUME onclick
+    my $event = 'return foswiki.JSPopupPlugin.openPopupSectional(event, \'popupSection'.$popupSectionNumber.'\');';#ASSUME onclick
     my $output = CGI::a(
                     {
                         id => 'popupSection'.$popupSectionNumber,
@@ -211,19 +200,19 @@ sub postRenderingHandler {
     # do not uncomment, use $_[0], $_[1]... instead
     #my $text = shift;
 
-    my $query = TWiki::Func::getCgiQuery();
+    my $query = Foswiki::Func::getCgiQuery();
     my $fromPopup = $query->param('fromPopup');
     return if (defined($fromPopup));#avoid nesting popups
 
     #add the  JavaScript
-    my $jscript = TWiki::Func::readTemplate ( 'jspopupplugin', 'javascript' );
+    my $jscript = Foswiki::Func::readTemplate ( 'jspopupplugin', 'javascript' );
     $jscript =~ s/%PLUGINPUBURL%/$pluginPubUrl/g;
     addToHEAD($pluginName, $jscript);
 
     #TODO: evaluate the MAKETEXT's, and the variables....
-    my $templateText = TWiki::Func::readTemplate ( 'jspopupplugin', 'popup' );
+    my $templateText = Foswiki::Func::readTemplate ( 'jspopupplugin', 'popup' );
     $templateText =~ s/%PLUGINPUBURL%/$pluginPubUrl/g;
-    $templateText = TWiki::Func::expandCommonVariables( $templateText, $TOPIC, $WEB );
+    $templateText = Foswiki::Func::expandCommonVariables( $templateText, $TOPIC, $WEB );
 
     $_[0] =~ s/(<\/body>)/$templateText $1/g;
 }
@@ -234,31 +223,31 @@ sub postRenderingHandler {
 
 # DEPRECATED in Dakar (postRenderingHandler does the job better)
 # This handler is required to re-insert blocks that were removed to protect
-# them from TWiki rendering, such as TWiki variables.
-$TWikiCompatibility{endRenderingHandler} = 1.1;
+# them from Foswiki rendering, such as Foswiki variables.
+$FoswikiCompatibility{endRenderingHandler} = 1.1;
 sub endRenderingHandler {
   return postRenderingHandler( @_ );
 }
 
 
 sub registerRESTHandler {
-    if ($TWiki::Plugins::VERSION eq 1.025) {
+    if ($Foswiki::Plugins::VERSION eq 1.025) {
         my ($name, $funcRef) = @_;
-        $TWikiCompatibility{RESTHandlers}{$pluginName.'.'.$name} = $funcRef;
+        $FoswikiCompatibility{RESTHandlers}{$pluginName.'.'.$name} = $funcRef;
     } else {
-        TWiki::Func::registerRESTHandler(@_);
+        Foswiki::Func::registerRESTHandler(@_);
     }
 }
 
-#to fake TWiki4 restHanders in Cairo, use the view script (url is different too :( view/WEB/TOPIC?rest=InlineEditPlugin.restHandlerFuncName)
+#to fake Foswiki4 restHanders in Cairo, use the view script (url is different too :( view/WEB/TOPIC?rest=InlineEditPlugin.restHandlerFuncName)
 #and add this sub to your beforeCommonTagsHandler
-sub fakeTWiki4RestHandlers {
+sub fakeFoswiki4RestHandlers {
     my ( $text, $topic, $web ) = @_;   #params passed on from beforeCommonTagsHandler
     #This is the view script based REST Handler cludge
-   my $query = TWiki::Func::getCgiQuery();
+   my $query = Foswiki::Func::getCgiQuery();
    my $restCall = $query->param('rest');
-    if (defined ($restCall) && defined($TWikiCompatibility{RESTHandlers}{$restCall})) {
-        my $function = $TWikiCompatibility{RESTHandlers}{$restCall};
+    if (defined ($restCall) && defined($FoswikiCompatibility{RESTHandlers}{$restCall})) {
+        my $function = $FoswikiCompatibility{RESTHandlers}{$restCall};
         print $query->header(
                     -content_type => 'text',
              );
@@ -274,25 +263,25 @@ sub fakeTWiki4RestHandlers {
 
 
 sub addToHEAD {
-    if ($TWiki::Plugins::VERSION eq 1.025) {
+    if ($Foswiki::Plugins::VERSION eq 1.025) {
         my ($name, $text) = @_;
-        $TWikiCompatibility{HEAD}{$name} = $text;
+        $FoswikiCompatibility{HEAD}{$name} = $text;
     } else {
-        TWiki::Func::addToHEAD( @_ );
+        Foswiki::Func::addToHEAD( @_ );
     }
 }
 
-sub setupTWiki4Compatibility {
+sub setupFoswiki4Compatibility {
     # check for Plugins.pm versions
-    if ( $TWiki::Plugins::VERSION < 1.025 ) {
-        TWiki::Func::writeWarning( "Version mismatch between $pluginName and Plugins.pm (tested on Cairo and TWiki-4.0))" );
+    if ( $Foswiki::Plugins::VERSION < 1.025 ) {
+        Foswiki::Func::writeWarning( "Version mismatch between $pluginName and Plugins.pm (tested on Cairo and Foswiki-4.0))" );
         return 0;
-    } elsif ($TWiki::Plugins::VERSION eq 1.025) {
+    } elsif ($Foswiki::Plugins::VERSION eq 1.025) {
         #Cairo
-        %{$TWikiCompatibility{HEAD}} = ();
-        %{$TWikiCompatibility{HEAD}} = ();
+        %{$FoswikiCompatibility{HEAD}} = ();
+        %{$FoswikiCompatibility{HEAD}} = ();
     } else {
-        #TWiki-4.0 and above
+        #Foswiki-4.0 and above
     }
 }
 

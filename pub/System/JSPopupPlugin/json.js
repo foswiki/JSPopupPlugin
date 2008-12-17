@@ -2,7 +2,9 @@
     json.js
     2006-04-28
 
-    SvenDowideit@home.org.au: added depth to object stringify, as I was getting 'too depp recursion' from a textarea object (maybe should ignore parent and sibling nodes?)
+    SvenDowideit@home.org.au: added depth to object stringify, 
+    as I was getting 'too depp recursion' from a textarea object 
+    (maybe should ignore parent and sibling nodes?)
 
     This file adds these methods to JavaScript:
 

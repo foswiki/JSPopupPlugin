@@ -24,44 +24,44 @@ InitJSPopups = function() {
         if ((elements[i].className == 'JSPopupSpan')) {
             var anchor = elements[i].getAttribute('anchortype');
             if (anchor == 'anchorless') {
-                twiki.JSPopupPlugin.openPopupSectional(null, elements[i].id)
+                foswiki.JSPopupPlugin.openPopupSectional(null, elements[i].id)
             }
         }
     }
-    var jspopupLinks = YAHOO.util.Dom.getElementsByClassName('twikiPopupLink');
+    var jspopupLinks = YAHOO.util.Dom.getElementsByClassName('foswikiPopupLink');
     for (var i = 0; i < jspopupLinks.length; i++) {
-        YAHOO.util.Event.addListener(jspopupLinks[i], 'click',  twiki.JSPopupPlugin.openThisAsPopup, jspopupLinks[i], true);
-//        addEvent(jspopupLinks[i], 'click',  twiki.JSPopupPlugin.openThisAsPopup);
+        YAHOO.util.Event.addListener(jspopupLinks[i], 'click',  foswiki.JSPopupPlugin.openThisAsPopup, jspopupLinks[i], true);
+//        addEvent(jspopupLinks[i], 'click',  foswiki.JSPopupPlugin.openThisAsPopup);
     }
 }
 
 
 
 //create the TWiki namespace if needed
-if ( typeof( twiki ) == "undefined" ) {
-    twiki = {};
+if ( typeof( foswiki ) == "undefined" ) {
+    foswiki = {};
 }
 
 /**********************************************************************************/
-//create the twiki.JSPopupPlugin namespace if needed
-if ( typeof( twiki.JSPopupPlugin ) == "undefined" ) {
-    twiki.JSPopupPlugin = {};
+//create the foswiki.JSPopupPlugin namespace if needed
+if ( typeof( foswiki.JSPopupPlugin ) == "undefined" ) {
+    foswiki.JSPopupPlugin = {};
 }
 
-twiki.JSPopupPlugin.DelayedOpenPopupSectional = function (event, sectionName) {
+foswiki.JSPopupPlugin.DelayedOpenPopupSectional = function (event, sectionName) {
     var sectionElem = document.getElementById(sectionName);
     var delay = sectionElem.getAttribute('delay');
     
     //TODO: consider making this an array, indexed by sectionName
-    delayedPopup = window.setTimeout("twiki.JSPopupPlugin.openPopupSectional(null, '"+sectionName+"')", delay);
+    delayedPopup = window.setTimeout("foswiki.JSPopupPlugin.openPopupSectional(null, '"+sectionName+"')", delay);
 }
  
-twiki.JSPopupPlugin.CancelOpenPopup = function() {
+foswiki.JSPopupPlugin.CancelOpenPopup = function() {
     window.clearTimeout(delayedPopup);
 }
 
 //returns false to prevent the default action of the anchor..
-twiki.JSPopupPlugin.openThisAsPopup = function (e) {
+foswiki.JSPopupPlugin.openThisAsPopup = function (e) {
 	var targ;
 	if (!e) var e = window.event;
 	if (e.target) targ = e.target;
@@ -75,8 +75,8 @@ twiki.JSPopupPlugin.openThisAsPopup = function (e) {
     if (!url) { url = targ.getAttribute('href'); }
     if (!url) { url = targ.innerHTML; }
     //reset the text to a simple default
-    ret = twiki.JSPopupPlugin.openPopup(e, 'Please wait, requesting data from server', targ.getAttribute('location'), targ.getAttribute('border'), targ.getAttribute('title'));
-    twiki.JSPopupPlugin.ajaxCall(e, url);
+    ret = foswiki.JSPopupPlugin.openPopup(e, 'Please wait, requesting data from server', targ.getAttribute('location'), targ.getAttribute('border'), targ.getAttribute('title'));
+    foswiki.JSPopupPlugin.ajaxCall(e, url);
     
     YAHOO.util.Event.stopEvent(e);
 
@@ -84,7 +84,7 @@ twiki.JSPopupPlugin.openThisAsPopup = function (e) {
 }
 
 //returns false to prevent the default action of the anchor..
-twiki.JSPopupPlugin.openPopupSectional = function (event, sectionName) {
+foswiki.JSPopupPlugin.openPopupSectional = function (event, sectionName) {
     var ret = true;
     if ((sectionName) && (sectionName != '')) {
         var sectionElem = document.getElementById(sectionName);
@@ -95,18 +95,18 @@ twiki.JSPopupPlugin.openPopupSectional = function (event, sectionName) {
             if (!url) { url = sectionElem.getAttribute('href'); }
             if (!url) { url = sectionElem.innerHTML; }
             //reset the text to a simple default
-            ret = twiki.JSPopupPlugin.openPopup(event, 'Please wait, requesting data from server', sectionElem.getAttribute('location'), sectionElem.getAttribute('border'), sectionElem.getAttribute('title'));
-            twiki.JSPopupPlugin.ajaxCall(event, url);
+            ret = foswiki.JSPopupPlugin.openPopup(event, 'Please wait, requesting data from server', sectionElem.getAttribute('location'), sectionElem.getAttribute('border'), sectionElem.getAttribute('title'));
+            foswiki.JSPopupPlugin.ajaxCall(event, url);
         } else {
-            ret = twiki.JSPopupPlugin.openPopup(event, sectionElem.innerHTML, sectionElem.getAttribute('location'), sectionElem.getAttribute('border'), sectionElem.getAttribute('title'));
+            ret = foswiki.JSPopupPlugin.openPopup(event, sectionElem.innerHTML, sectionElem.getAttribute('location'), sectionElem.getAttribute('border'), sectionElem.getAttribute('title'));
         }
     } else {
-        ret = twiki.JSPopupPlugin.closePopup(event);
+        ret = foswiki.JSPopupPlugin.closePopup(event);
     }
     return ret;
 }
 
-twiki.JSPopupPlugin.closePopup = function (event) {
+foswiki.JSPopupPlugin.closePopup = function (event) {
     //var showControl = document.getElementById('popupwindow');
     //showControl.style.display = 'none';
     return false;
@@ -120,7 +120,7 @@ var handleCancel = function() {
     this.cancel(); 
 }; 
 
-twiki.JSPopupPlugin.openPopup = function (event, text, popuplocation, border, title) {
+foswiki.JSPopupPlugin.openPopup = function (event, text, popuplocation, border, title) {
     if (!popuplocation) {
         popuplocation = 'center';
     }
@@ -216,7 +216,7 @@ twiki.JSPopupPlugin.openPopup = function (event, text, popuplocation, border, ti
     return false;
 }
 
-twiki.JSPopupPlugin.ajaxCall = function(event, popupUrl, popupParams) {
+foswiki.JSPopupPlugin.ajaxCall = function(event, popupUrl, popupParams) {
 //TODO: redo these as params in the Args
     //make sure there's no popup div in the reply
     if (popupUrl.indexOf('?') != -1) {
@@ -250,7 +250,7 @@ twiki.JSPopupPlugin.ajaxCall = function(event, popupUrl, popupParams) {
                     }
                 }
                 data = '<div>' + data + '</div>';
-                twiki.JSPopupPlugin.openPopup(event, data);
+                foswiki.JSPopupPlugin.openPopup(event, data);
 
 	      }, 
 	  failure: function(o) {alert('Error!\nStatusText='+o.statusText+'\nContents='+o.responseText);}

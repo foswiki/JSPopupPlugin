@@ -2,14 +2,16 @@
 ---+ JSPopupPlugin Foswiki Plugin
 
 JSPopupPlugin allows you to show dynamic content in a virtual popup dialog.
-Good for status messages, or to show detailed information without causing the web browser's context to switch from the page that they requested.
+Good for status messages, or to show detailed information without causing the
+web browser's context to switch from the page that they requested.
 
 *Uses Foswiki:Extensions.YahooUserInterfaceContrib*
 
-It uses javascript to create a popup window containing either a hidden pre-rendered part of a topic, or a Foswiki request that is dynamically requested and served.
+It uses javascript to create a popup window containing either a hidden pre-rendered
+part of a topic, or a Foswiki request that is dynamically requested and served.
 Popups are activated either on a mouse click, when the mouse passes over the anchor, or when the page is loaded.
 
-To make it easy for [[%SYSTEMWEB%.Skins]] developers, any html link with the css  =foswikiPopupLink= class will get a popup dialog. 
+To make it easy for [[%SYSTEMWEB%.Skins]] developers, any html link with the css  =foswikiPopupLink= class will get a popup dialog.
 If the Javascript fails, or this plugin is disabled, the link will gracefully fall back to going to the link in the main browser window.
 
 use the =foswikiPopupLink= class to get popup dialog elements on urls that can degrade gracefully for users without javascript.
@@ -18,8 +20,8 @@ use the =foswikiPopupLink= class to get popup dialog elements on urls that can d
 This will allow you to create a popup Comment Edit box (don't forget to create the #<nop>Comments anchor):
 <verbatim>
 %POPUP{
-anchor="<button class='foswikiButton'>add comment</button>" 
-popuptext="$percntCOMMENT{target=\"#Comments\"}$percnt" 
+anchor="<button class='foswikiButton'>add comment</button>"
+popuptext="$percntCOMMENT{target=\"#Comments\"}$percnt"
 popuptexttype="tml"
 }%
 </verbatim>
@@ -27,10 +29,10 @@ popuptexttype="tml"
 or a popup menu of webs
 <verbatim>
 %POPUP{
-anchor=" *listofwebs* " 
-anchortype="onmouseover" 
-popuptext="%WEBLIST{"| [[$name.WebHome][$name]] |"}%" 
-popuptexttype="tml" 
+anchor=" *listofwebs* "
+anchortype="onmouseover"
+popuptext="%WEBLIST{"| [[$name.WebHome][$name]] |"}%"
+popuptexttype="tml"
 popuplocation="below"
 border="off"
 }%
@@ -49,8 +51,8 @@ popuptexttype="rest"
 or a popup that can quickly show you the last change made to the topic.
 <verbatim>
 %POPUPLINK{
-"Last edit" 
-url="%SCRIPTURL{rdiff}%/%WEB%/%TOPIC%?type=last" 
+"Last edit"
+url="%SCRIPTURL{rdiff}%/%WEB%/%TOPIC%?type=last"
 }%
 </verbatim>
 
@@ -99,10 +101,10 @@ a plugin setting write ==%<nop>&lt;plugin&gt;_&lt;setting&gt;%==, i.e. ==%<nop>J
    * Debug plugin: (See output in =data/debug.txt=)
       * Set DEBUG = 0
 
----++ Plugin Installation Instructions 
+---++ Plugin Installation Instructions
 
-__Note:__ You do not need to install anything on the browser to use this plugin. 
-The following instructions are for the administrator who installs the plugin on the server where Foswiki is running. 
+__Note:__ You do not need to install anything on the browser to use this plugin.
+The following instructions are for the administrator who installs the plugin on the server where Foswiki is running.
 
    * Download the ZIP file from the Plugin web (see below)
    * Unzip ==%TOPIC%.zip== in your foswiki installation directory. Content: <table cellspacing="1" cellpadding="0" border="1">       *File:*  *Description:*        ==data/System/%TOPIC%.txt==  Plugin topic        ==data/System/%TOPIC%.txt,v==  Plugin topic repository        ==lib/Foswiki/Plugins/%TOPIC%.pm==  Plugin Perl module  </table>
@@ -111,26 +113,26 @@ The following instructions are for the administrator who installs the plugin on 
 %POPUP{anchor="<button class='foswikiButton'>Clicking here should popup some text</button>" popuptitle="testing" popuptext="This is a popup text" popuptexttype="tml"}%
 
  %POPUPLINK{
-"View Raw" 
-url="%SCRIPTURL{view}%/%WEB%/%TOPIC%?raw=on" 
+"View Raw"
+url="%SCRIPTURL{view}%/%WEB%/%TOPIC%?raw=on"
 }%
 
 ---++ Plugin Info
 
-|  Plugin Author: | Foswiki:Main.SvenDowideit - SvenDowideit@wikiring.com - <img src="%ATTACHURLPATH%/wikiringlogo20x20.png" /> [[http://www.wikiring.com][WikiRing.com]] |
-|  Copyright: | &copy; 2001-2008, SvenDowideit@wikiring.com |
+|  Plugin Author: | Foswiki:Main.SvenDowideit - SvenDowideit@fosiki.com - <img src="%ATTACHURLPATH%/wikiringlogo20x20.png" /> [[http://www.wikiring.com][WikiRing.com]] |
+|  Copyright: | &copy; 2001-2009, SvenDowideit@fosiki.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
-| 16 Aug 2008 | update for YUI 2.5.2 |
-| 9 Sept 2007 | fixed it to use the yui event handling, rather than the moved addLoadEvent |
-| 12 Feb 2007 | added POPUPLINK tag |
+|  6 Jan 2009 | port to Foswiki and update for YUI 2.6.0 |
+|  16 Aug 2008 | update for YUI 2.5.2 |
+|  9 Sept 2007 | fixed it to use the yui event handling, rather than the moved addLoadEvent |
+|  12 Feb 2007 | added POPUPLINK tag |
 |  23 Oct 2006 | added delay by Foswiki:Main.OliverKrueger, and added use of Foswiki:Extensions.YahooUserInterfaceContrib |
 |  01 May 2006 | Initial version |
 |  CPAN Dependencies: | %$DEPENDANCIES% |
 |  Other Dependencies: | Foswiki:Extensions.YahooUserInterfaceContrib |
 |  Perl Version: | 5.005 |
 |  Plugin Home: | http://foswiki.org/Extensions/%TOPIC% |
-|  Feedback: | http://foswiki.org/Extensions/%TOPIC%Dev |
 
 __Related Topics:__ [[%SYSTEMWEB%.Plugins][Plugins]], %SYSTEMWEB%.DeveloperDocumentationCategory, %SYSTEMWEB%.AdminDocumentationCategory, %SYSTEMWEB%.DefaultPreferences, %USERSWEB%.SitePreferences
 

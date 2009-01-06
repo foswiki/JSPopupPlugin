@@ -131,7 +131,6 @@ url="%SCRIPTURL{view}%/%WEB%/%TOPIC%?raw=on"
 |  01 May 2006 | Initial version |
 |  CPAN Dependencies: | %$DEPENDANCIES% |
 |  Other Dependencies: | Foswiki:Extensions.YahooUserInterfaceContrib |
-|  Perl Version: | 5.005 |
 |  Plugin Home: | http://foswiki.org/Extensions/%TOPIC% |
 
 __Related Topics:__ [[%SYSTEMWEB%.Plugins][Plugins]], %SYSTEMWEB%.DeveloperDocumentationCategory, %SYSTEMWEB%.AdminDocumentationCategory, %SYSTEMWEB%.DefaultPreferences, %USERSWEB%.SitePreferences
